@@ -12,7 +12,7 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
-class RefreshTokenMiddleware extends BaseMiddleware
+class JsonWebTokenMiddleware extends BaseMiddleware
 {
     use ApiHelper;
 
@@ -35,12 +35,12 @@ class RefreshTokenMiddleware extends BaseMiddleware
             throw new UnauthorizedHttpException('jwt-auth', '用户信息失效');
         } catch (UnauthorizedHttpException $exception) {
             return $this->responseError('需要用户令牌', 401);
+        } catch (TokenBlacklistedException $exception) {
+            return $this->responseError('令牌拉黑无效', 401);
         } catch (TokenInvalidException $exception) {
             return $this->responseError('令牌格式无效', 401);
         } catch (TokenExpiredException $exception) {
             return $this->responseError('用户令牌过期', 401);
-        } catch (TokenBlacklistedException $exception) {
-            return $this->responseError('用户令牌弃用', 401);
         }
     }
 }

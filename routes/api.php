@@ -7,11 +7,12 @@ Route::namespace('Api\V1')
     ->group(function () {
         Route::get('/user/list', 'UserController@list')->name('user.list');
         Route::get('/user/show', 'UserController@show')->name('user.show');
+        Route::get('/user/verify', 'UserController@verify')->name('user.verify');
         Route::post('/user/login', 'UserController@login')->name('user.login');
         Route::post('/user/logout', 'UserController@logout')->name('user.logout');
         Route::post('/user/register', 'UserController@register')->name('user.register');
 
-        Route::middleware(['refresh.token'])->group(function () {
+        Route::middleware(['jwt'])->group(function () {
             Route::get('/user/me', 'UserController@me')->name('user.me');
         });
     });

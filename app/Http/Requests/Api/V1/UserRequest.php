@@ -36,6 +36,11 @@ class UserRequest extends FormRequest
                     'id' => ['required', 'integer', 'exists:users'],
                 ];
                 break;
+            case 'user.verify':
+                return [
+                    'token' => ['required', 'string'],
+                ];
+                break;
             default:
                 return [];
                 break;

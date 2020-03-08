@@ -6,7 +6,9 @@ use App\Helpers\JwtHelper;
 use App\Http\Requests\Api\V1\UserRequest;
 use App\Http\Resources\Api\V1\UserResource;
 use App\Models\User;
+use DB;
 use Illuminate\Http\JsonResponse;
+use Throwable;
 
 /**
  * Class UserController
@@ -48,6 +50,7 @@ class UserController extends Controller
      * @param  UserRequest  $request
      *
      * @return JsonResponse
+     * @throws Throwable
      */
     public function register(UserRequest $request)
     {
@@ -58,6 +61,7 @@ class UserController extends Controller
         ]);
         $meta = JwtHelper::generateMeta($user);
         $user->meta = $meta;
+        $user->sendEmailVerificationNotification();
 
         return $this->responseSuccess(new UserResource($user));
     }
@@ -104,5 +108,10 @@ class UserController extends Controller
     public function me(UserRequest $request)
     {
         return $this->responseSuccess(new UserResource(auth()->user()));
+    }
+
+    public function verifiy(UserRequest $request)
+    {
+
     }
 }
