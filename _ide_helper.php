@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 6.17.1 on 2020-03-05 17:31:40.
+ * Generated for Laravel 6.17.1 on 2020-06-01 13:53:16.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -5069,6 +5069,7 @@ namespace Illuminate\Support\Facades {
     /**
      * 
      *
+     * @see \Illuminate\Events\Dispatcher
      */ 
     class Event {
         

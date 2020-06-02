@@ -60,7 +60,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'cors' => \Medz\Cors\Laravel\Middleware\ShouldGroup::class,
-        'refresh.token' => \App\Http\Middleware\RefreshTokenMiddleware::class
+        'jwt' => \App\Http\Middleware\JsonWebTokenMiddleware::class,
     ];
     /**
      * The priority-sorted list of middleware.

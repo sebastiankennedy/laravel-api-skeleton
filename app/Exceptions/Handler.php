@@ -8,6 +8,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class Handler - 托管应用程序触发的所有异常
@@ -57,10 +58,14 @@ class Handler extends ExceptionHandler
      * @param  Request  $request
      * @param  Exception  $exception
      *
-     * @return Response|JsonResponse
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws Exception
      */
     public function render($request, Exception $exception)
     {
+        // 日志记录异常
+        Log::error($exception->getMessage(), $exception->getTrace());
+
         // 处理 Ajax 请求异常
         if ($request->ajax()) {
             if (app()->environment() === 'production') {

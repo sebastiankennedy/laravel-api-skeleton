@@ -176,7 +176,8 @@ return [
         App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         // Json Web Token
-        Tymon\JWTAuth\Providers\LaravelServiceProvider::class
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        App\Providers\LikeServiceProvider::class,
     ],
 
     /*
@@ -230,4 +231,9 @@ return [
 
     ],
 
+    'api' => [
+        'version' => env('API_VERSION'),
+        'route_name' => env('API_ROUTE_NAME'),
+        'route_prefix' => env('API_ROUTE_PREFIX'),
+    ],
 ];
