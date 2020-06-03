@@ -1,8 +1,8 @@
 <?php
 
 Route::namespace('Api\V1')
-    ->prefix('v1')
-    ->name('api.v1.')
+    ->name(config('app.api.route_name'))
+    ->prefix(config('app.api.route_prefix'))
     ->middleware(['cors'])
     ->group(
         function () {

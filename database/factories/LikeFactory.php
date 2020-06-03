@@ -11,9 +11,9 @@ $factory->define(
     Like::class,
     function (Faker $faker) {
         return [
-            'user_id' => User::query()->orderBy('id', 'desc')->first(),
-            'likable_id' => $faker->numberBetween(1, 50),
-            'likable_type' => Post::class,
+            'user_id' => $faker->randomElement([49, 50, 51]),
+            'likeable_id' => $faker->numberBetween(1, 3),
+            'likeable_type' => Post::class,
             'created_at' => now(),
             'updated_at' => now(),
         ];

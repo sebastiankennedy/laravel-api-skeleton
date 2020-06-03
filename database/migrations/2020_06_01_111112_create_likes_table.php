@@ -17,7 +17,7 @@ class CreateLikesTable extends Migration
         Schema::create(
             config('like.table_name'),
             function (Blueprint $table) {
-                $name = config('like.morph_many_name') ?: 'likable';
+                $name = config('like.morph_many_name') ?: 'likeable';
                 $foreign_key = config('like.foreign_key') ?: 'user_id';
 
                 $table->bigIncrements('id');
