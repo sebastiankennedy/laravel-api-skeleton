@@ -36,5 +36,7 @@ return [
     | This option define a field name of polymorphic many-to-many relationship
     |
     */
-    'morph_many_name' => 'likable',
+    'morph_many_name' => 'likeable',
+    'morph_many_id' => 'likeable_id',
+    'morph_many_type' => 'likeable_type',
 ];

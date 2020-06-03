@@ -12,7 +12,7 @@ class Like extends Model
     {
         parent::__construct($attributes);
 
-        $this->table = config('like.like_table');
+        $this->table = config('like.table_name');
     }
 
     protected static function boot()
@@ -27,7 +27,7 @@ class Like extends Model
         );
     }
 
-    public function likable()
+    public function likeable()
     {
         return $this->morphTo();
     }

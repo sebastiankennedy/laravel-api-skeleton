@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Behaviors\ToLikeBehavior;
 use App\Notifications\EmailVerification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,6 +12,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
     use Notifiable;
+    use ToLikeBehavior;
+    public const TABLE_NAME = 'users';
     /**
      * The attributes that are mass assignable.
      *
