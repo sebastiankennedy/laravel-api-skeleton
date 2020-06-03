@@ -13,11 +13,11 @@ class AuthRequest extends FormRequest
      */
     public function rules()
     {
-        switch ($this->currentRouteName) {
+        switch ($this->simpledRouteName) {
             case 'auth.register':
                 return [
                     'name' => ['required', 'string'],
-                    'email' => ['required', 'email'],
+                    'email' => ['required', 'email', 'unique:' . User::TABLE_NAME],
                     'password' => ['required', 'string'],
                 ];
                 break;

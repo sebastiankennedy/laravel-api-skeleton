@@ -11,18 +11,7 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        switch ($this->currentRouteName) {
-            case 'users.index':
-                return [
-                    'name' => ['string'],
-                    'email' => ['email'],
-                ];
-                break;
-            case 'users.show':
-                return [
-                    'id' => ['required', 'integer', 'exists:users'],
-                ];
-                break;
+        switch ($this->simpledRouteName) {
             default:
                 return [];
                 break;

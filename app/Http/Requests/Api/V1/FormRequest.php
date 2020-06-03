@@ -11,17 +11,17 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
 class FormRequest extends BaseRequest
 {
     /**
-     * 当前请求路由名称
-     *
      * @var string
      */
     public $currentRouteName;
     /**
-     * 当前接口版本
-     *
-     * @var
+     * @var string
      */
     public $currentVersion;
+    /**
+     * @var string
+     */
+    public $simpledRouteName;
 
     /**
      * FormRequest constructor.
@@ -29,8 +29,9 @@ class FormRequest extends BaseRequest
     public function __construct()
     {
         parent::__construct();
-        $this->currentVersion = 'api.vi.';
-        $this->currentRouteName = $this->currentVersion.Route::currentRouteName();
+        $this->currentVersion = config('app.api.route_prefix');
+        $this->currentRouteName = Route::currentRouteName();
+        $this->simpledRouteName = substr($this->currentRouteName, strlen($this->currentVersion));
     }
 
     /**
