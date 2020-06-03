@@ -63,11 +63,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        // 日志记录异常
-        Log::error($exception->getMessage(), $exception->getTrace());
-
         // 处理 Ajax 请求异常
         if ($request->ajax()) {
+            // 日志记录异常
+            Log::error($exception->getMessage(), $exception->getTrace());
+
             if (app()->environment() === 'production') {
                 return $this->responseError('线上环境未知错误，请联系相关人员进行修复');
             } else {
