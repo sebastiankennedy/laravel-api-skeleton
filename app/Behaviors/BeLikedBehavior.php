@@ -13,16 +13,7 @@ trait BeLikedBehavior
                 return $this->likers->contains($user);
             }
 
-            if ($this->relationLoaded('likes')) {
-                return $this->likes->where(config('like.foreign_key'), $user->getKey())->count() > 0;
-            }
-
-            $like_model_name = config('like.model');
-            $like_model = new $like_model_name();
-
-            return $like_model::query()
-                    ->where(config('like.morph_many_id'), $this->getKey())
-                    ->where(config('like.morph_many_type'), $this->getMorphClass())
+            return ($this->relationLoaded('likes') ? $this->likes : $this->likes())
                     ->where(config('like.foreign_key'), $user->getKey())
                     ->count() > 0;
         }

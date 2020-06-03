@@ -6,20 +6,43 @@ use Illuminate\Database\Eloquent\Model;
 
 trait ToLikeBehavior
 {
-    public function hasLiked(Model $model)
+    public function toggleLiked(Model $model)
     {
-        if ($this->relationLoaded('likes')) {
-            return $this->likes
-                    ->where(config('like.morph_many_id'), $model->getKey())
-                    ->where(config('like.morph_many_type'), $model->getMorphClass())
-                    ->count() > 0;
+        return $this->hasLiked($model) ? $this->unlike($model) : $this->like($model);
+    }
+
+    public function unlike(Model $model)
+    {
+        $relation = $model->likes()
+            ->where(config('like.morph_many_id'), $model->getKey())
+            ->where(config('like.morph_many_type'), $model->getMorphClass())
+            ->where(config('like.foreign_key'), $this->getKey())
+            ->first();
+
+        if ($relation) {
+            return $relation->delete();
         }
 
-        $like_model_name = config('like.model');
-        $like_model = new $like_model_name();
+        return null;
+    }
 
-        return $like_model::query()
-                ->where(config('like.foreign_key'), $this->getKey())
+    public function like(Model $model)
+    {
+        if (!$this->hasLiked($model)) {
+            $like = app(config('like.model'));
+            $like->{config('like.foreign_key')} = $this->getKey();
+            $like->{config('like.morph_many_id')} = $model->getKey();
+            $like->{config('like.morph_many_type')} = $model->getMorphClass();
+
+            return $this->likes()->save($like);
+        }
+
+        return null;
+    }
+
+    public function hasLiked(Model $model)
+    {
+        return ($this->relationLoaded('likes') ? $this->likes : $this->likes())
                 ->where(config('like.morph_many_id'), $model->getKey())
                 ->where(config('like.morph_many_type'), $model->getMorphClass())
                 ->count() > 0;
