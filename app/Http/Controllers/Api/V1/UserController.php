@@ -13,10 +13,6 @@ use Illuminate\Http\JsonResponse;
  */
 class UserController extends Controller
 {
-    public function index(UserRequest $request)
-    {
-
-    }
     /**
      * @param  UserRequest  $request
      *

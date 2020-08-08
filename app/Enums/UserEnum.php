@@ -4,9 +4,9 @@ namespace App\Enums;
 
 class UserEnum
 {
-    const STATUS_DELETED = -1;
-    const STATUS_DISABLE = 0;
-    const STATUS_ENABLE = 1;
+    public const STATUS_DELETED = -1;
+    public const STATUS_DISABLE = 0;
+    public const STATUS_ENABLE = 1;
 
     public static function getStatusName($status)
     {

@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Api\V1;
 use App\Helpers\JwtHelper;
 use App\Http\Requests\Api\V1\AuthRequest;
 use App\Http\Resources\Api\V1\UserResource;
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Throwable;
 
+/**
+ * Class AuthController - 用户认证控制器
+ *
+ * @package App\Http\Controllers\Api\V1
+ */
 class AuthController extends Controller
 {
     /**
@@ -65,5 +69,20 @@ class AuthController extends Controller
         auth()->logout();
 
         return $this->responseSuccess([]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function refresh()
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return $this->responseError('用户令牌无效', 401);
+        }
+        $token = JwtHelper::generateToken($user);
+        $user->meta = JwtHelper::generateMeta($token);
+
+        return $this->responseSuccess(new UserResource($user));
     }
 }

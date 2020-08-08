@@ -8,12 +8,13 @@ Route::namespace('Api\V1')
         function () {
             Route::post('/auth/login', 'AuthController@login')->name('auth.login');
             Route::post('/auth/logout', 'AuthController@logout')->name('auth.logout');
+            Route::post('/auth/refresh', 'AuthCOntroller@refresh')->name('auth.refresh');
             Route::post('/auth/register', 'AuthController@register')->name('auth.register');
 
-            Route::middleware(['jwt'])->group(
+            Route::middleware(['jwt.auth'])->group(
                 function () {
+                    Route::get('/users/me', 'UserController@me')->name('user.me');
                     Route::resource('users', 'UserController');
-                    Route::get('/user/me', 'UserController@me')->name('user.me');
                 }
             );
         }

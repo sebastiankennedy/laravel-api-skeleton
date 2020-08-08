@@ -7,8 +7,11 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 /**
  * Class Handler - 托管应用程序触发的所有异常
@@ -58,23 +61,52 @@ class Handler extends ExceptionHandler
      * @param  Request  $request
      * @param  Exception  $exception
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws Exception
      */
     public function render($request, Exception $exception)
     {
-        // 处理 Ajax 请求异常
         if ($request->ajax()) {
-            // 日志记录异常
-            Log::error($exception->getMessage(), $exception->getTrace());
+            if ($response = $this->isJsonWebTokenException($exception)) {
+                return $response;
+            }
 
             if (app()->environment() === 'production') {
                 return $this->responseError('线上环境未知错误，请联系相关人员进行修复');
             } else {
-                return $this->responseError($exception->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR, $exception->getTrace());
+                return $this->responseError(
+                    $exception->getMessage() ?: get_class($exception),
+                    JsonResponse::HTTP_INTERNAL_SERVER_ERROR,
+                    $exception->getTrace()
+                );
             }
         }
 
         return parent::render($request, $exception);
+    }
+
+    /**
+     * 判断是否为 Json Web Token 引发的异常
+     *
+     * @param $exception
+     *
+     * @return JsonResponse|null
+     */
+    public function isJsonWebTokenException($exception)
+    {
+        if ($exception instanceof UnauthorizedHttpException) {
+            return $this->responseError('用户令牌无效', 401);
+        }
+        if ($exception->getPrevious() instanceof TokenBlacklistedException) {
+            return $this->responseError('用户令牌弃用', 401);
+        }
+        if ($exception->getPrevious() instanceof TokenExpiredException) {
+            return $this->responseError('用户令牌过期', 401);
+        }
+        if ($exception->getPrevious() instanceof TokenInvalidException) {
+            return $this->responseError('令牌格式无效', 401);
+        }
+
+        return null;
     }
 }
