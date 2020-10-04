@@ -9,14 +9,14 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "caouecs/laravel-lang": "^4.0",
         "fideloper/proxy": "^4.0",
+        "laravel-lang/lang": "^7.0",
         "laravel/framework": "^6.2",
         "laravel/horizon": "^3.7",
         "laravel/tinker": "^2.0",
         "medz/cors": "^1.4",
         "symfony/translation": "4.3.8",
-        "tymon/jwt-auth": "1.0.0-rc.5"
+        "tymon/jwt-auth": "1.0.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",

@@ -7,8 +7,8 @@ Route::namespace('Api\V1')
     ->group(
         function () {
             Route::post('/auth/login', 'AuthController@login')->name('auth.login');
-            Route::post('/auth/logout', 'AuthController@logout')->name('auth.logout');
-            Route::post('/auth/refresh', 'AuthCOntroller@refresh')->name('auth.refresh');
+            Route::delete('/auth/logout', 'AuthController@logout')->name('auth.logout');
+            Route::put('/auth/refresh', 'AuthCOntroller@refresh')->name('auth.refresh');
             Route::post('/auth/register', 'AuthController@register')->name('auth.register');
 
             Route::middleware(['jwt.auth'])->group(
