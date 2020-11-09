@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
@@ -71,6 +72,14 @@ class Handler extends ExceptionHandler
                 return $response;
             }
 
+            if ($exception instanceof InvalidParameterException) {
+                return $this->responseError(
+                    $exception->getMessage() ?: get_class($exception),
+                    $exception->getCode() ?: JsonResponse::HTTP_INTERNAL_SERVER_ERROR,
+                    $exception->getTrace()
+                );
+            }
+
             if (app()->environment() === 'production') {
                 return $this->responseError('线上环境未知错误，请联系相关人员进行修复');
             } else {
@@ -107,6 +116,6 @@ class Handler extends ExceptionHandler
             return $this->responseError('令牌格式无效', 401);
         }
 
-        return null;
+        return false;
     }
 }
